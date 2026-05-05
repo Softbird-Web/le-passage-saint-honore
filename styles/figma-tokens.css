@@ -1,0 +1,39 @@
+/* Design tokens — Le Passage Saint-Honoré */
+/* Colors extracted from brand photography + storefront. Refine with HUE on lecafeblanc.com */
+
+:root {
+  /* Brand colors — from storefront photo */
+  --color-primary: #C13530;             /* deep red — awning/brand */
+  --color-primary-dark: #9B2820;
+  --color-bg: #F5F0E8;                  /* warm cream */
+  --color-bg-alt: #EDE8DE;              /* slightly darker cream for alternating sections */
+  --color-bg-dark: #1A2035;             /* dark navy — signage/footer */
+  --color-text: #1A2035;
+  --color-text-light: #F5F0E8;          /* light text on dark sections */
+  --color-text-muted: #6B5F52;
+  --color-accent: #D4A833;              /* mustard yellow — awning stripes */
+  --color-accent-dark: #A87E20;
+  --color-border: rgba(26, 32, 53, 0.12);
+  --color-border-light: rgba(245, 240, 232, 0.2);
+
+  /* Typography */
+  --font-heading: var(--font-cormorant);
+  --font-body: var(--font-josefin-sans);
+  --tracking-heading: -0.02em;          /* Cormorant tracking */
+  --tracking-caps: 0.12em;             /* Josefin Sans uppercase eyebrow */
+
+  /* Spacing scale */
+  --space-section: 120px;
+  --space-section-sm: 72px;
+  --space-section-xs: 48px;
+
+  /* Radius */
+  --radius-card: 4px;
+  --radius-btn: 2px;
+
+  /* Motion */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-expo: cubic-bezier(0.7, 0, 0.84, 0);
+  --duration-default: 0.6s;
+  --duration-slow: 1s;
+}
