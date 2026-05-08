@@ -153,72 +153,42 @@ export default function AnimationInit() {
         if (bg) gsap.to(bg, { yPercent: 18, scale: 1.1, ease: 'none', scrollTrigger: { trigger: fc, start: 'top bottom', end: 'bottom top', scrub: true } })
       }
 
-      function menuSnapScroll() {
-        const wrapEl = document.querySelector<HTMLElement>('.horizontal__wrap')
-        if (!wrapEl) return
-        const wrap = wrapEl
-        const panels = Array.from(wrap.querySelectorAll<HTMLElement>('.horizontal__panel'))
-        if (!panels.length) return
-
-        let snapping = false
-        let snapTarget = 0
-
-        function getClosestIdx(): number {
-          let closest = Infinity
-          let idx = 0
-          panels.forEach((p, i) => {
-            const dist = Math.abs(p.getBoundingClientRect().top)
-            if (dist < closest) { closest = dist; idx = i }
-          })
-          return idx
-        }
-
-        function inSection(): boolean {
-          const r = wrap.getBoundingClientRect()
-          return r.top <= 0 && r.bottom >= window.innerHeight
-        }
-
-        function doSnap(idx: number) {
-          snapping = true
-          snapTarget = idx
-          const lenis = (window as any).__lenis
-          if (lenis) lenis.scrollTo(panels[idx], { offset: 0, duration: 0.7 })
-          setTimeout(() => { snapping = false }, 800)
-        }
-
-        window.addEventListener('wheel', (e: WheelEvent) => {
-          if (!inSection()) return
-          if (!snapping) snapTarget = getClosestIdx()
-          const dir = e.deltaY > 0 ? 1 : -1
-          const next = snapTarget + dir
-          if (next < 0 || next >= panels.length) return
-          e.preventDefault()
-          e.stopPropagation()
-          if (snapping) return
-          doSnap(next)
-        }, { passive: false, capture: true })
-
-        const lenisInst = (window as any).__lenis
-        if (lenisInst && lenisInst.on) {
-          let corrTimer: ReturnType<typeof setTimeout> | null = null
-          lenisInst.on('scroll', (data: { velocity: number }) => {
-            if (snapping || !inSection()) {
-              if (corrTimer) { clearTimeout(corrTimer); corrTimer = null }
-              return
-            }
-            if (Math.abs(data.velocity) < 0.05) {
-              if (corrTimer) return
-              corrTimer = setTimeout(() => {
-                corrTimer = null
-                if (snapping || !inSection()) return
-                const idx = getClosestIdx()
-                if (Math.abs(panels[idx].getBoundingClientRect().top) > 8) doSnap(idx)
-              }, 80)
-            } else {
-              if (corrTimer) { clearTimeout(corrTimer); corrTimer = null }
-            }
-          })
-        }
+      function initHorizontalScrolling() {
+        const mm = gsap.matchMedia()
+        mm.add(
+          {
+            isMobile: '(max-width:479px)',
+            isMobileLandscape: '(max-width:767px)',
+            isTablet: '(max-width:991px)',
+            isDesktop: '(min-width:992px)',
+          },
+          (context) => {
+            const { isMobileLandscape } = context.conditions as { isMobile: boolean; isMobileLandscape: boolean; isTablet: boolean; isDesktop: boolean }
+            const ctx = gsap.context(() => {
+              const wrappers = document.querySelectorAll<HTMLElement>('[data-horizontal-scroll-wrap]')
+              if (!wrappers.length) return
+              wrappers.forEach((wrap) => {
+                const disable = wrap.getAttribute('data-horizontal-scroll-disable')
+                if (disable === 'mobileLandscape' && isMobileLandscape) return
+                const panels = gsap.utils.toArray<HTMLElement>('[data-horizontal-scroll-panel]', wrap)
+                if (panels.length < 2) return
+                gsap.to(panels, {
+                  x: () => -(wrap.scrollWidth - window.innerWidth),
+                  ease: 'none',
+                  scrollTrigger: {
+                    trigger: wrap,
+                    start: 'top top',
+                    end: () => '+=' + (wrap.scrollWidth - window.innerWidth),
+                    scrub: true,
+                    pin: true,
+                    invalidateOnRefresh: true,
+                  },
+                })
+              })
+            })
+            return () => ctx.revert()
+          }
+        )
       }
 
       function testimonialsTicker() {
@@ -291,7 +261,7 @@ export default function AnimationInit() {
         parallaxImages()
         marquees()
         finalCtaScroll()
-        menuSnapScroll()
+        initHorizontalScrolling()
         ScrollTrigger.refresh()
       }
 

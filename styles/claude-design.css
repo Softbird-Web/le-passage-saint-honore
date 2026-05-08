@@ -717,19 +717,26 @@ h3.display { font-size: clamp(28px, 3.4vw, 56px); }
    Horizontal scroll: Menu × Brunch × Cocktails
    ============================================ */
 .horizontal__wrap {
-  position: relative;
+  display: flex;
+  flex-flow: row;
+  min-height: 100dvh;
+  overflow: hidden;
   background: var(--ink);
 }
 .horizontal__panel {
+  flex: none;
   width: 100%;
-  height: 100vh;
+  height: 100dvh;
   position: relative;
 }
 .horizontal__panel-inner {
   width: 100%;
   height: 100%;
   position: relative;
-  overflow: hidden;
+}
+@media (max-width: 767px) {
+  .horizontal__wrap { flex-flow: column; overflow: visible; }
+  .horizontal__panel { height: 85vw; min-height: 420px; }
 }
 .horizontal__panel-bg {
   position: absolute;
@@ -1639,6 +1646,8 @@ h3.display { font-size: clamp(28px, 3.4vw, 56px); }
   bottom: 0;
   left: 0;
   overflow: hidden;
+  isolation: isolate;
+  contain: paint;
 }
 .progressive-blur__layer { width: 100%; height: 100%; position: absolute; }
 .progressive-blur__layer.is--1 { backdrop-filter: blur(.09375em); -webkit-backdrop-filter: blur(.09375em); mask: linear-gradient(#0000 50%, #000 62.5% 75%, #0000 87.5%); -webkit-mask: linear-gradient(#0000 50%, #000 62.5% 75%, #0000 87.5%); }
