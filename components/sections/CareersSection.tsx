@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import { brand } from '@/lib/brand'
+import CareersForm from '@/components/forms/CareersForm'
 
 export default function CareersSection() {
   return (
@@ -70,6 +71,10 @@ export default function CareersSection() {
               </a>
             </div>
           </div>
+        </div>
+
+        <div className="careers-form-wrap" data-reveal>
+          <CareersForm />
         </div>
       </div>
     </section>

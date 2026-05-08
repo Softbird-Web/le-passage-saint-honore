@@ -32,8 +32,7 @@ export default function PrivatisationTeaser() {
               </p>
             </div>
             <div className="actions">
-              <a className="btn red" href="#contact">Demander un devis <span className="arrow">↗</span></a>
-              <a className="btn ghost" href="#contact">Brochure (PDF)</a>
+              <a className="btn red" href="/privatisation#devis">Demander un devis <span className="arrow">↗</span></a>
             </div>
           </article>
 

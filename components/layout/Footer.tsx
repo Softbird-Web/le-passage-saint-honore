@@ -11,7 +11,7 @@ export default function Footer() {
         <div style={{ display: 'flex', gap: 32, fontFamily: 'var(--font-sans)', fontSize: 14, letterSpacing: '0.18em', textTransform: 'uppercase', opacity: 0.85, flexWrap: 'wrap' }}>
           <a href="#histoire">Histoire</a>
           <a href="#carte">Carte</a>
-          <a href="#privatisation">Privatisation</a>
+          <a href="/privatisation">Privatisation</a>
           <a href="#instagram">Instagram</a>
           <a href="#contact">Réserver</a>
         </div>

@@ -1646,3 +1646,102 @@ h3.display { font-size: clamp(28px, 3.4vw, 56px); }
 .progressive-blur__layer.is--3 { backdrop-filter: blur(.375em); -webkit-backdrop-filter: blur(.375em); mask: linear-gradient(#0000 75%, #000 87.5% 100%); -webkit-mask: linear-gradient(#0000 75%, #000 87.5% 100%); }
 .progressive-blur__layer.is--4 { backdrop-filter: blur(.75em); -webkit-backdrop-filter: blur(.75em); mask: linear-gradient(#0000 82%, #000 92% 100%); -webkit-mask: linear-gradient(#0000 82%, #000 92% 100%); }
 .progressive-blur__layer.is--5 { backdrop-filter: blur(1.5em); -webkit-backdrop-filter: blur(1.5em); mask: linear-gradient(#0000 88%, #000 100%); -webkit-mask: linear-gradient(#0000 88%, #000 100%); }
+
+/* ===== Privatisation page — split-screen ===== */
+.priv-split-page {
+  display: grid;
+  grid-template-columns: 60fr 40fr;
+  min-height: 100vh;
+  align-items: start;
+}
+.priv-photo {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+.priv-photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1;
+}
+.priv-testimonial {
+  position: absolute;
+  bottom: 48px;
+  left: 48px;
+  right: 48px;
+  background: rgba(13, 11, 9, 0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: 28px 32px;
+  border-radius: 6px;
+  color: var(--cream);
+  z-index: 2;
+}
+.priv-testimonial .quote { font-family: var(--font-display); font-size: clamp(15px, 1.1vw, 19px); font-style: italic; line-height: 1.55; }
+.priv-testimonial .stars { color: var(--mustard); letter-spacing: 3px; margin-top: 12px; font-size: 14px; }
+.priv-testimonial .author { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.55; margin-top: 10px; }
+.priv-form-col {
+  background: var(--ink);
+  color: var(--cream);
+  min-height: 100vh;
+  padding: clamp(100px, 12vh, 140px) clamp(28px, 4vw, 60px) clamp(64px, 8vw, 100px);
+}
+.priv-headline {
+  font-family: var(--font-sans);
+  font-size: clamp(20px, 1.9vw, 28px);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  line-height: 1.25;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.priv-headline .ital {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 300;
+  text-transform: none;
+  font-size: 1.12em;
+  letter-spacing: 0;
+}
+.priv-desc { font-size: 14px; line-height: 1.75; opacity: 0.7; margin-bottom: 44px; }
+.priv-section-label {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.45;
+  margin-bottom: 20px;
+  margin-top: 36px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.priv-section-note { font-size: 12px; opacity: 0.55; margin-top: -8px; margin-bottom: 20px; line-height: 1.55; }
+.priv-form-col .field label { color: var(--mustard); }
+.priv-form-col .field input,
+.priv-form-col .field select,
+.priv-form-col .field textarea { color: var(--cream); border-bottom-color: rgba(255, 255, 255, 0.15); background: transparent; }
+.priv-form-col .field input:focus,
+.priv-form-col .field select:focus,
+.priv-form-col .field textarea:focus { border-bottom-color: var(--mustard); }
+.priv-form-col .field select option { background: var(--ink); color: var(--cream); }
+.priv-form-col .field input::placeholder,
+.priv-form-col .field textarea::placeholder { opacity: 0.35; color: var(--cream); }
+.priv-submit { margin-top: 36px; }
+.priv-submit button { width: 100%; justify-content: center; letter-spacing: 0.14em; font-size: 12px; padding: 18px 24px; }
+.priv-error { color: var(--red); margin-top: 16px; font-family: var(--font-script); font-size: 17px; }
+@media (max-width: 900px) {
+  .priv-split-page { grid-template-columns: 1fr; }
+  .priv-photo { position: relative; height: 62vw; min-height: 260px; }
+  .priv-form-col { min-height: auto; }
+  .priv-testimonial { bottom: 24px; left: 24px; right: 24px; padding: 20px 24px; }
+}
+
+/* ===== Careers inline form ===== */
+.careers-form-wrap {
+  margin-top: clamp(64px, 8vw, 100px);
+  max-width: 760px;
+}

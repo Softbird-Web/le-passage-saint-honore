@@ -164,7 +164,7 @@ export default function Navbar() {
               </a>
             </li>
             <li data-reveal-l>
-              <a href="#privatisation" className="underlay-nav__link-large">
+              <a href="/privatisation" className="underlay-nav__link-large">
                 <span className="num">— 04</span>
                 <span className="underlay-nav__link-label">Privatisation</span>
               </a>
