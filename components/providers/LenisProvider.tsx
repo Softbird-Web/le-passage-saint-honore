@@ -32,8 +32,9 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
         infinite: false,
       })
       lenisRef.current = lenis
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ;(window as any).__lenis = lenis
 
-      // Dispatch scroll event for ScrollTrigger sync (consumed by PageTransitionProvider)
       lenis.on('scroll', () => {
         window.dispatchEvent(new CustomEvent('lenis-scroll'))
       })
@@ -72,6 +73,8 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
       if (lenisRef.current) {
         lenisRef.current.destroy()
         lenisRef.current = null
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        delete (window as any).__lenis
       }
     }
   }, [])

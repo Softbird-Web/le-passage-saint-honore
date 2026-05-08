@@ -1,146 +1,283 @@
 'use client'
 
 import { useEffect } from 'react'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
-gsap.registerPlugin(ScrollTrigger)
-
-/**
- * Animation contract
- *
- *   <section data-anim-section>              // reveal on scroll (or immediate if it's the hero)
- *     <div data-anim-item>...</div>          // staggers with its siblings in DOM order
- *     <div data-anim-item>...</div>
- *   </section>
- *
- * If no items exist inside a section, the section itself fades as one block.
- * Hero section (marked data-anim-section="hero") plays immediately instead of on scroll.
- * Navbar (marked data-anim-navbar) animates once on first page load only.
- * Legacy `data-anim="..."` tags are still collected and treated as items.
- */
-
-const REVEAL_HIDDEN = {
-  opacity: 0,
-  yPercent: 60,
-  filter: 'blur(20px)',
-  willChange: 'transform, filter, opacity',
-}
-const REVEAL_SHOWN = {
-  opacity: 1,
-  yPercent: 0,
-  filter: 'blur(0px)',
-}
-const DEFAULTS = { duration: 1, ease: 'power3.out' }
-const ITEM_STAGGER = 0.12
-
-function initButtonCharacterStagger() {
-  const offsetIncrement = 0.01
-  const buttons = document.querySelectorAll('[data-button-animate-chars]')
-  buttons.forEach((button) => {
-    const text = button.textContent
-    button.innerHTML = ''
-    ;[...(text ?? '')].forEach((char, index) => {
-      const span = document.createElement('span')
-      span.textContent = char
-      span.style.transitionDelay = `${index * offsetIncrement}s`
-      if (char === ' ') span.style.whiteSpace = 'pre'
-      button.appendChild(span)
-    })
-  })
-}
-
-function clearWillChange(els: Element[]) {
-  els.forEach((el) => {
-    ;(el as HTMLElement).style.willChange = 'auto'
-  })
-}
-
-function collectItems(section: Element): HTMLElement[] {
-  // Take any tagged item in DOM order. Explicit authoring > heuristic detection.
-  const nodes = section.querySelectorAll<HTMLElement>('[data-anim-item], [data-anim]')
-  return Array.from(nodes)
-}
-
-function revealSection(section: Element, { immediate }: { immediate: boolean }) {
-  const items = collectItems(section)
-  const scrollTrigger = immediate
-    ? undefined
-    : {
-        trigger: section,
-        start: 'top 80%',
-        once: true,
-        toggleActions: 'play none none none',
-        invalidateOnRefresh: true,
-      }
-
-  // Fallback: no tagged items → animate the section itself as one block
-  if (items.length === 0) {
-    gsap.set(section, REVEAL_HIDDEN)
-    const tl = gsap.timeline({ defaults: DEFAULTS, scrollTrigger })
-    tl.to(section, {
-      ...REVEAL_SHOWN,
-      onComplete: () => clearWillChange([section]),
-    })
-    if (immediate) requestAnimationFrame(() => tl.play(0))
-    return
-  }
-
-  gsap.set(items, REVEAL_HIDDEN)
-  const tl = gsap.timeline({ defaults: DEFAULTS, scrollTrigger })
-  tl.to(items, {
-    ...REVEAL_SHOWN,
-    stagger: ITEM_STAGGER,
-    onComplete: () => clearWillChange(items),
-  })
-  if (immediate) requestAnimationFrame(() => tl.play(0))
-}
-
-function revealNavbar() {
-  const navbar = document.querySelector<HTMLElement>('[data-anim-navbar]')
-  if (!navbar) return
-  gsap.set(navbar, {
-    opacity: 0,
-    yPercent: -60,
-    filter: 'blur(20px)',
-    willChange: 'transform, filter, opacity',
-  })
-  gsap.to(navbar, {
-    ...REVEAL_SHOWN,
-    ...DEFAULTS,
-    onComplete: () => clearWillChange([navbar]),
-  })
-}
-
-function initScrollReveal({ isFirstLoad }: { isFirstLoad: boolean }) {
-  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  if (prefersReduced) return
-
-  // Navbar persists across page transitions — only animate it on initial mount
-  if (isFirstLoad) revealNavbar()
-
-  document.querySelectorAll('[data-anim-section]').forEach((section) => {
-    const isHero = section.matches("[data-anim-section='hero']")
-    revealSection(section, { immediate: isHero })
-  })
-}
 
 export default function AnimationInit() {
   useEffect(() => {
-    let firstInit = true
+    let mounted = true
 
-    function init() {
-      ScrollTrigger.getAll().forEach((t) => t.kill())
-      initButtonCharacterStagger()
-      initScrollReveal({ isFirstLoad: firstInit })
-      firstInit = false
+    async function init() {
+      const { default: gsap } = await import('gsap')
+      const { ScrollTrigger } = await import('gsap/ScrollTrigger')
+      gsap.registerPlugin(ScrollTrigger)
+      if (!mounted) return
+
+      // Sync Lenis smooth scroll with GSAP ScrollTrigger
+      window.addEventListener('lenis-scroll', () => ScrollTrigger.update(), { passive: true })
+
+      // Theme
+      const savedTheme = localStorage.getItem('lpsh-theme') ?? 'light'
+      document.documentElement.dataset.theme = savedTheme
+
+      // Helpers
+      function splitWords(el: Element) {
+        const text = el.textContent ?? ''
+        el.textContent = ''
+        const frag = document.createDocumentFragment()
+        text.split(/(\s+)/).forEach((token) => {
+          if (token.match(/^\s+$/)) frag.appendChild(document.createTextNode(token))
+          else if (token.length) {
+            const w = document.createElement('span')
+            w.className = 'word'
+            const inner = document.createElement('span')
+            inner.className = 'inner'
+            inner.textContent = token
+            w.appendChild(inner)
+            frag.appendChild(w)
+          }
+        })
+        el.appendChild(frag)
+        return el.querySelectorAll('.word .inner')
+      }
+
+      function splitChars(el: Element) {
+        const walk = (node: Node) => {
+          if (node.nodeType === 3) {
+            const text = node.textContent ?? ''
+            const frag = document.createDocumentFragment()
+            for (const c of text) {
+              if (c === ' ') frag.appendChild(document.createTextNode(' '))
+              else {
+                const span = document.createElement('span')
+                span.className = 'char'
+                span.textContent = c
+                frag.appendChild(span)
+              }
+            }
+            node.parentNode?.replaceChild(frag, node)
+          } else if (node.nodeType === 1) Array.from(node.childNodes).forEach(walk)
+        }
+        walk(el)
+        return el.querySelectorAll('.char')
+      }
+
+      function heroScroll() {
+        const hero = document.querySelector('.hero')
+        if (!hero) return
+        const img = hero.querySelector('.hero-image')
+        const headline = hero.querySelector('.hero-headline')
+        if (img) gsap.to(img, { yPercent: 18, scale: 1.08, ease: 'none', scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true } })
+        if (headline) gsap.to(headline, { yPercent: -40, opacity: 0.2, ease: 'none', scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true } })
+      }
+
+      function wordsPullUp() {
+        document.querySelectorAll('[data-words-pullup]').forEach((el) => {
+          const words = splitWords(el)
+          gsap.fromTo(words, { yPercent: 110, opacity: 0 }, {
+            yPercent: 0, opacity: 1, duration: 1.0, ease: 'power4.out', stagger: 0.08,
+            scrollTrigger: { trigger: el, start: 'top 85%' },
+          })
+        })
+      }
+
+      function animatedParagraphs() {
+        document.querySelectorAll('[data-anim-para]').forEach((el) => {
+          const chars = splitChars(el)
+          el.classList.add('char-reveal')
+          gsap.fromTo(chars, { opacity: 0.18 }, {
+            opacity: 1, ease: 'none', stagger: { each: 0.02, from: 'start' as const },
+            scrollTrigger: { trigger: el, start: 'top 75%', end: 'bottom 60%', scrub: true },
+          })
+        })
+      }
+
+      function genericReveals() {
+        document.querySelectorAll('[data-reveal]').forEach((el) => {
+          gsap.fromTo(el, { opacity: 0, yPercent: 8, filter: 'blur(20px)' }, {
+            opacity: 1, yPercent: 0, filter: 'blur(0px)', duration: 1.4, ease: 'power3.out',
+            scrollTrigger: { trigger: el, start: 'top 85%' },
+          })
+        })
+        document.querySelectorAll('[data-card-stagger]').forEach((container) => {
+          const items = container.querySelectorAll('[data-card]')
+          gsap.fromTo(items, { opacity: 0, scale: 0.95, y: 30 }, {
+            opacity: 1, scale: 1, y: 0, duration: 1.0, ease: 'power3.out', stagger: 0.12,
+            scrollTrigger: { trigger: container, start: 'top 80%' },
+          })
+        })
+      }
+
+      function parallaxImages() {
+        document.querySelectorAll('[data-parallax]').forEach((el) => {
+          const speed = parseFloat((el as HTMLElement).dataset.parallax ?? '0.2') || 0.2
+          gsap.to(el, { yPercent: speed * 100, ease: 'none', scrollTrigger: {
+            trigger: (el as HTMLElement).closest('[data-parallax-trigger]') || el.parentElement,
+            start: 'top bottom', end: 'bottom top', scrub: true,
+          }})
+        })
+      }
+
+      function marquees() {
+        document.querySelectorAll('.marquee').forEach((m) => {
+          const track = m.querySelector<HTMLElement>('.marquee-track')
+          if (!track) return
+          track.innerHTML += track.innerHTML
+          const w = track.scrollWidth / 2
+          gsap.set(track, { x: 0 })
+          const speed = parseFloat((m as HTMLElement).dataset.speed ?? '60') || 60
+          gsap.to(track, { x: -w, duration: w / speed, ease: 'none', repeat: -1 })
+          const bias = gsap.quickTo(track, 'skewX', { duration: 0.6, ease: 'power3.out' })
+          ScrollTrigger.create({
+            trigger: m, start: 'top bottom', end: 'bottom top',
+            onUpdate: (st) => bias(gsap.utils.clamp(-8, 8, st.getVelocity() / 200)),
+          })
+        })
+      }
+
+      function terrasseScroll() {
+        const t = document.querySelector('.terrasse')
+        if (!t) return
+        const bg = t.querySelector('.terrasse-bg')
+        if (bg) gsap.to(bg, { yPercent: 22, scale: 1.12, ease: 'none', scrollTrigger: { trigger: t, start: 'top bottom', end: 'bottom top', scrub: true } })
+      }
+
+      function finalCtaScroll() {
+        const fc = document.querySelector('.final-cta')
+        if (!fc) return
+        const headline = fc.querySelector('.final-cta-headline h2')
+        if (headline) {
+          const words = splitWords(headline)
+          gsap.fromTo(words, { yPercent: 110 }, { yPercent: 0, duration: 1.0, stagger: 0.08, ease: 'power4.out', scrollTrigger: { trigger: fc, start: 'top 65%' } })
+        }
+        const bg = fc.querySelector('.final-cta-bg')
+        if (bg) gsap.to(bg, { yPercent: 18, scale: 1.1, ease: 'none', scrollTrigger: { trigger: fc, start: 'top bottom', end: 'bottom top', scrub: true } })
+      }
+
+      function menuSnapScroll() {
+        const wrapEl = document.querySelector<HTMLElement>('.horizontal__wrap')
+        if (!wrapEl) return
+        const wrap = wrapEl
+        const panels = Array.from(wrap.querySelectorAll<HTMLElement>('.horizontal__panel'))
+        if (!panels.length) return
+
+        let snapping = false
+
+        function getClosestIdx(): number {
+          let closest = Infinity
+          let idx = 0
+          panels.forEach((p, i) => {
+            const dist = Math.abs(p.getBoundingClientRect().top)
+            if (dist < closest) { closest = dist; idx = i }
+          })
+          return idx
+        }
+
+        function inSection(): boolean {
+          const r = wrap.getBoundingClientRect()
+          return r.top <= 20 && r.bottom >= window.innerHeight - 20
+        }
+
+        wrap.addEventListener('wheel', (e: WheelEvent) => {
+          if (!inSection()) return
+          const idx = getClosestIdx()
+          const dir = e.deltaY > 0 ? 1 : -1
+          const next = idx + dir
+          if (next < 0 || next >= panels.length) return
+          e.preventDefault()
+          e.stopPropagation()
+          if (snapping) return
+          snapping = true
+          setTimeout(() => { snapping = false }, 900)
+          const lenis = (window as any).__lenis
+          if (lenis) lenis.scrollTo(panels[next], { offset: 0, duration: 0.9 })
+        }, { passive: false })
+      }
+
+      function testimonialsTicker() {
+        const track = document.querySelector<HTMLElement>('.testi-track')
+        if (!track) return
+        track.innerHTML += track.innerHTML
+        const items = track.children
+        let half = 0
+        Array.from(items).slice(0, items.length / 2).forEach((it) => {
+          half += (it as HTMLElement).offsetWidth + 24
+        })
+        gsap.set(track, { x: 0 })
+        gsap.to(track, { x: -half, duration: half / 40, ease: 'none', repeat: -1 })
+      }
+
+      function vinylSpin() {
+        const v = document.querySelector('.playlist-vinyl')
+        if (!v) return
+        gsap.to(v, { rotation: 360, duration: 14, repeat: -1, ease: 'none' })
+      }
+
+      function initCursorMarquee() {
+        const cursorEl = document.querySelector<HTMLElement>('[data-cursor-marquee-status]')
+        if (!cursorEl) return
+        const cursor = cursorEl
+        const targets = cursor.querySelectorAll<HTMLElement>('[data-cursor-marquee-text-target]')
+        const xTo = gsap.quickTo(cursor, 'x', { duration: 0.4, ease: 'power3' })
+        const yTo = gsap.quickTo(cursor, 'y', { duration: 0.4, ease: 'power3' })
+        let pauseTimeout: ReturnType<typeof setTimeout> | null = null
+        let activeEl: Element | null = null
+        let lastX = 0; let lastY = 0
+        function playFor(el: Element) {
+          if (pauseTimeout) clearTimeout(pauseTimeout)
+          const text = (el as HTMLElement).dataset.cursorMarqueeText ?? ''
+          const sec = (text.length || 1) / 5
+          targets.forEach(t => { t.textContent = text; t.style.animationPlayState = 'running'; t.style.animationDuration = sec + 's' })
+          cursor.setAttribute('data-cursor-marquee-status', 'active')
+          activeEl = el
+        }
+        function pauseLater() {
+          cursor.setAttribute('data-cursor-marquee-status', 'not-active')
+          if (pauseTimeout) clearTimeout(pauseTimeout)
+          pauseTimeout = setTimeout(() => { targets.forEach(t => { t.style.animationPlayState = 'paused' }) }, 400)
+          activeEl = null
+        }
+        function checkTarget() {
+          const el = document.elementFromPoint(lastX, lastY)
+          const hit = el?.closest('[data-cursor-marquee-text]') ?? null
+          if (hit !== activeEl) {
+            if (activeEl) pauseLater()
+            if (hit) playFor(hit)
+          }
+        }
+        window.addEventListener('pointermove', e => { lastX = e.clientX; lastY = e.clientY; xTo(lastX); yTo(lastY); checkTarget() }, { passive: true })
+        window.addEventListener('scroll', () => { xTo(lastX); yTo(lastY); checkTarget() }, { passive: true })
+        setTimeout(() => cursor.setAttribute('data-cursor-marquee-status', 'not-active'), 500)
+      }
+
+      // Run immediately (no preloader dependency)
+      vinylSpin()
+      testimonialsTicker()
+      initCursorMarquee()
+
+      // Run after preloader completes
+      function runScrollAnimations() {
+        heroScroll()
+        wordsPullUp()
+        animatedParagraphs()
+        genericReveals()
+        parallaxImages()
+        marquees()
+        finalCtaScroll()
+        menuSnapScroll()
+        ScrollTrigger.refresh()
+      }
+
+      window.addEventListener('preloader-done', runScrollAnimations, { once: true })
+
+      // Fallback: if preloader already ran or doesn't exist, run immediately after a tick
+      const preloader = document.querySelector('.preloader')
+      if (!preloader) {
+        setTimeout(runScrollAnimations, 100)
+      }
     }
 
     init()
-
-    const onTransition = () => init()
-    window.addEventListener('page-transition-start', onTransition)
-    return () => window.removeEventListener('page-transition-start', onTransition)
+    return () => { mounted = false }
   }, [])
 
   return null
