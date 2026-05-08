@@ -161,6 +161,7 @@ export default function AnimationInit() {
         if (!panels.length) return
 
         let snapping = false
+        let snapTarget = 0
 
         function getClosestIdx(): number {
           let closest = Infinity
@@ -174,23 +175,50 @@ export default function AnimationInit() {
 
         function inSection(): boolean {
           const r = wrap.getBoundingClientRect()
-          return r.top <= 20 && r.bottom >= window.innerHeight - 20
+          return r.top <= 0 && r.bottom >= window.innerHeight
         }
 
-        wrap.addEventListener('wheel', (e: WheelEvent) => {
+        function doSnap(idx: number) {
+          snapping = true
+          snapTarget = idx
+          const lenis = (window as any).__lenis
+          if (lenis) lenis.scrollTo(panels[idx], { offset: 0, duration: 0.7 })
+          setTimeout(() => { snapping = false }, 800)
+        }
+
+        window.addEventListener('wheel', (e: WheelEvent) => {
           if (!inSection()) return
-          const idx = getClosestIdx()
+          if (!snapping) snapTarget = getClosestIdx()
           const dir = e.deltaY > 0 ? 1 : -1
-          const next = idx + dir
+          const next = snapTarget + dir
           if (next < 0 || next >= panels.length) return
           e.preventDefault()
           e.stopPropagation()
           if (snapping) return
-          snapping = true
-          setTimeout(() => { snapping = false }, 900)
-          const lenis = (window as any).__lenis
-          if (lenis) lenis.scrollTo(panels[next], { offset: 0, duration: 0.9 })
-        }, { passive: false })
+          doSnap(next)
+        }, { passive: false, capture: true })
+
+        const lenisInst = (window as any).__lenis
+        if (lenisInst && lenisInst.on) {
+          let corrTimer: ReturnType<typeof setTimeout> | null = null
+          lenisInst.on('scroll', (data: { velocity: number }) => {
+            if (snapping || !inSection()) {
+              if (corrTimer) { clearTimeout(corrTimer); corrTimer = null }
+              return
+            }
+            if (Math.abs(data.velocity) < 0.05) {
+              if (corrTimer) return
+              corrTimer = setTimeout(() => {
+                corrTimer = null
+                if (snapping || !inSection()) return
+                const idx = getClosestIdx()
+                if (Math.abs(panels[idx].getBoundingClientRect().top) > 8) doSnap(idx)
+              }, 80)
+            } else {
+              if (corrTimer) { clearTimeout(corrTimer); corrTimer = null }
+            }
+          })
+        }
       }
 
       function testimonialsTicker() {

@@ -709,6 +709,9 @@ h3.display { font-size: clamp(28px, 3.4vw, 56px); }
   .env-grid { grid-template-columns: repeat(2, 1fr); }
   .env-grid .cell { grid-column: auto !important; margin-top: 0 !important; aspect-ratio: 4/5; }
 }
+@media (max-width: 1024px) {
+  .env-grid [data-cursor-marquee-text] { cursor: pointer !important; }
+}
 
 /* ============================================
    Horizontal scroll: Menu × Brunch × Cocktails
@@ -738,7 +741,7 @@ h3.display { font-size: clamp(28px, 3.4vw, 56px); }
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.15) 40%, rgba(0,0,0,0.7) 100%);
+  background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.45) 40%, rgba(0,0,0,0.82) 100%);
 }
 .horizontal__panel-content {
   position: relative;
