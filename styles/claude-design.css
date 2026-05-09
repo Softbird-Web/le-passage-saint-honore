@@ -746,7 +746,7 @@ h3.display { font-size: clamp(28px, 3.4vw, 56px); }
 @media (max-width: 767px) {
   .horizontal__outer { min-height: 0; height: auto; }
   .horizontal__wrap { position: static; flex-flow: column; height: auto; overflow: visible; }
-  .horizontal__panel { height: 85vw; min-height: 420px; }
+  .horizontal__panel { height: 100vh; }
 }
 .horizontal__panel-bg {
   position: absolute;

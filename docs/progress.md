@@ -1,5 +1,8 @@
 # Progress — Le Passage Saint-Honoré
 
+## Lessons
+- **Horizontal scroll section** (Menu/Brunch/Cocktails): use `position: sticky` outer + GSAP scrub on x-translation. **Do NOT** use GSAP `pin: true` — the generated `.pin-spacer` has no z-index and subsequent cream-bg sections paint over the pinned dark wrap, causing a blank cream mid-scroll. Full pattern + the rabbit-hole story: `vibe-coding/vibe-coding-instructions/02-animation-patterns/horizontal-scroll-sticky.md`.
+
 ## Done ✅
 - [x] Project scaffold (Next.js 16.2.4 + Tailwind v4 + GSAP + Lenis)
 - [x] lib/brand.ts — fully filled with all client data
