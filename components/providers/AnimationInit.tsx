@@ -160,40 +160,36 @@ export default function AnimationInit() {
 
       function initHorizontalScrolling() {
         const mm = gsap.matchMedia()
-        mm.add(
-          {
-            isMobile: '(max-width:479px)',
-            isMobileLandscape: '(max-width:767px)',
-            isTablet: '(max-width:991px)',
-            isDesktop: '(min-width:992px)',
-          },
-          (context) => {
-            const { isMobileLandscape } = context.conditions as { isMobile: boolean; isMobileLandscape: boolean; isTablet: boolean; isDesktop: boolean }
-            const ctx = gsap.context(() => {
-              const wrappers = document.querySelectorAll<HTMLElement>('[data-horizontal-scroll-wrap]')
-              if (!wrappers.length) return
-              wrappers.forEach((wrap) => {
-                const disable = wrap.getAttribute('data-horizontal-scroll-disable')
-                if (disable === 'mobileLandscape' && isMobileLandscape) return
-                const panels = gsap.utils.toArray<HTMLElement>('[data-horizontal-scroll-panel]', wrap)
-                if (panels.length < 2) return
-                gsap.to(panels, {
-                  x: () => -(wrap.scrollWidth - window.innerWidth),
-                  ease: 'none',
-                  scrollTrigger: {
-                    trigger: wrap,
-                    start: 'top top',
-                    end: () => '+=' + (wrap.scrollWidth - window.innerWidth),
-                    scrub: true,
-                    pin: true,
-                    invalidateOnRefresh: true,
-                  },
-                })
+        mm.add('(min-width:768px)', () => {
+          const outers = document.querySelectorAll<HTMLElement>('[data-horizontal-scroll-outer]')
+          if (!outers.length) return
+          const ctx = gsap.context(() => {
+            outers.forEach((outer) => {
+              const panels = gsap.utils.toArray<HTMLElement>('[data-horizontal-scroll-panel]', outer)
+              if (panels.length < 2) return
+              const setOuterHeight = () => {
+                outer.style.height = `${window.innerHeight + (panels.length - 1) * window.innerWidth}px`
+              }
+              setOuterHeight()
+              gsap.to(panels, {
+                x: () => -((panels.length - 1) * window.innerWidth),
+                ease: 'none',
+                scrollTrigger: {
+                  trigger: outer,
+                  start: 'top top',
+                  end: 'bottom bottom',
+                  scrub: true,
+                  invalidateOnRefresh: true,
+                  onRefresh: setOuterHeight,
+                },
               })
             })
-            return () => ctx.revert()
+          })
+          return () => {
+            ctx.revert()
+            outers.forEach((o) => { o.style.height = '' })
           }
-        )
+        })
       }
 
       function testimonialsTicker() {

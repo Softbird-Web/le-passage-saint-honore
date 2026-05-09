@@ -2,6 +2,7 @@ import Image from 'next/image'
 
 export default function MenuShowcaseSection() {
   return (
+    <div className="horizontal__outer" data-horizontal-scroll-outer>
     <section className="horizontal__wrap" data-horizontal-scroll-wrap>
 
       <article data-horizontal-scroll-panel className="horizontal__panel">
@@ -68,5 +69,6 @@ export default function MenuShowcaseSection() {
       </article>
 
     </section>
+    </div>
   )
 }
