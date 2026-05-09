@@ -722,6 +722,7 @@ h3.display { font-size: clamp(28px, 3.4vw, 56px); }
   min-height: 100dvh;
   overflow: hidden;
   background: var(--ink);
+  z-index: 10;
 }
 .horizontal__panel {
   flex: none;

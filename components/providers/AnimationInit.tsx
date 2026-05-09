@@ -12,8 +12,13 @@ export default function AnimationInit() {
       gsap.registerPlugin(ScrollTrigger)
       if (!mounted) return
 
-      // Sync Lenis smooth scroll with GSAP ScrollTrigger
-      window.addEventListener('lenis-scroll', () => ScrollTrigger.update(), { passive: true })
+      // Sync Lenis smooth scroll with GSAP ScrollTrigger (direct bind — no CustomEvent hop)
+      const lenisInst = (window as any).__lenis
+      if (lenisInst?.on) {
+        lenisInst.on('scroll', () => ScrollTrigger.update())
+      } else {
+        window.addEventListener('lenis-scroll', () => ScrollTrigger.update(), { passive: true })
+      }
 
       // Theme
       const savedTheme = localStorage.getItem('lpsh-theme') ?? 'light'
