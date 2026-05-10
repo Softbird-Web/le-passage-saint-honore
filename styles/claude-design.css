@@ -885,7 +885,9 @@ h3.display { font-size: clamp(28px, 3.4vw, 56px); }
   border-radius: 6px;
   overflow: hidden;
   position: relative;
-  min-height: 360px;
+}
+@media (min-width: 900px) {
+  .terrasse-2col-image { min-height: 360px; }
 }
 
 /* ===== Marquee ===== */
