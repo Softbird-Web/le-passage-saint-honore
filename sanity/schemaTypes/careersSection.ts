@@ -18,6 +18,28 @@ export const careersSection = defineType({
       type: 'array',
       of: [{ type: 'string' }],
     }),
+    defineField({
+      name: 'positions',
+      title: 'Postes ouverts',
+      type: 'array',
+      of: [
+        defineField({
+          name: 'position',
+          type: 'object',
+          fields: [
+            defineField({ name: 'title', title: 'Intitulé du poste', type: 'string', validation: (R) => R.required() }),
+            defineField({
+              name: 'type',
+              title: 'Contrat',
+              type: 'string',
+              options: { list: ['CDI', 'CDD', 'Extra', 'Apprentissage', 'Stage'] },
+            }),
+            defineField({ name: 'description', title: 'Description', type: 'text', rows: 2 }),
+          ],
+          preview: { select: { title: 'title', subtitle: 'type' } },
+        }),
+      ],
+    }),
   ],
   preview: { select: { title: 'heading' } },
 })

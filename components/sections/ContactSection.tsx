@@ -1,6 +1,12 @@
 import { brand } from '@/lib/brand'
+import type { SiteSettingsData } from '@/lib/sanity.types'
 
-export default function ContactSection() {
+export default function ContactSection({ settings }: { settings?: SiteSettingsData | null }) {
+  const address = settings?.contact?.address ?? brand.contact.address
+  const phone = settings?.contact?.phone ?? brand.contact.phone
+  const email = settings?.contact?.email ?? brand.contact.email
+  const hoursFull = settings?.hours?.full ?? brand.hours.full
+  const hoursBrunch = settings?.hours?.brunch ?? brand.hours.brunch
   return (
     <section className="section contact" id="contact">
       <div className="max">
@@ -18,22 +24,21 @@ export default function ContactSection() {
           <div className="contact-info" data-reveal>
             <div className="block">
               <div className="label">l'adresse</div>
-              <div className="value">{brand.contact.address.split(',')[0]}<br />{brand.contact.city} · M° Tuileries</div>
+              <div className="value">{address.split(',')[0]}<br />Paris 1er · M° Tuileries</div>
             </div>
             <div className="block">
               <div className="label">téléphone</div>
-              <div className="value">{brand.contact.phone}</div>
+              <div className="value">{phone}</div>
             </div>
             <div className="block">
               <div className="label">courriel</div>
-              <div className="value normal">{brand.contact.email}</div>
+              <div className="value normal">{email}</div>
             </div>
             <div className="block">
               <div className="label">horaires</div>
               <div className="value normal">
-                Lun — Ven · 07h30 — minuit<br />
-                Sam — Dim · 09h — minuit<br />
-                Brunch dominical · 11h — 16h
+                {hoursFull}<br />
+                Brunch · {hoursBrunch}
               </div>
             </div>
           </div>

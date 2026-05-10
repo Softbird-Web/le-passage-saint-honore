@@ -4,6 +4,7 @@ import "./globals.css";
 import LenisProvider from "@/components/providers/LenisProvider";
 import AnimationInit from "@/components/providers/AnimationInit";
 import Navbar from "@/components/layout/Navbar";
+import { getSiteSettings } from "@/lib/getHomepage";
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -34,22 +35,29 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: "Le Passage Saint-Honoré — Bistrot Parisien",
-  description: "Bistrot parisien au cœur de la Place du Marché Saint-Honoré. Brunch, terrasse, cuisine généreuse et espaces privatisables à Paris 1er.",
-  openGraph: {
-    title: "Le Passage Saint-Honoré",
-    description: "Bistrot parisien · Brunch · Terrasse · Privatisation — Paris 1er",
-    locale: "fr_FR",
-    type: "website",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const s = await getSiteSettings()
+  const name = s?.restaurantName ?? "Le Passage Saint-Honoré"
+  const tagline = s?.tagline ?? "Bistrot parisien · Brunch · Terrasse · Privatisation — Paris 1er"
+  const description = s?.description ?? "Bistrot parisien au cœur de la Place du Marché Saint-Honoré. Brunch, terrasse, cuisine généreuse et espaces privatisables à Paris 1er."
+  return {
+    title: `${name} — Bistrot Parisien`,
+    description,
+    openGraph: {
+      title: name,
+      description: tagline,
+      locale: "fr_FR",
+      type: "website",
+    },
+  }
+}
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const settings = await getSiteSettings()
   return (
     <html
       lang="fr"
@@ -88,7 +96,7 @@ export default function RootLayout({
         </div>
 
         <LenisProvider>
-          <Navbar />
+          <Navbar settings={settings} />
           <AnimationInit />
           <div data-main style={{ position: "relative", zIndex: 2 }}>
             {children}

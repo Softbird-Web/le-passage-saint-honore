@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { useState } from 'react'
 import Lightbox from 'yet-another-react-lightbox'
 import 'yet-another-react-lightbox/styles.css'
+import type { EnvironnementData } from '@/lib/sanity.types'
 
 const GALLERY = [
   { src: '/images/hero/terrace-lanterns.jpg', alt: "Vue d'ensemble de la terrasse couverte avec plafond en chaume et lanternes en macramé" },
@@ -17,8 +18,11 @@ const GALLERY = [
   { src: '/images/ambiance/staff-branded-cap.jpg', alt: "Membre de l'équipe portant la casquette Le Passage Saint-Honoré" },
 ]
 
-export default function EnvironnementSection() {
+export default function EnvironnementSection({ data }: { data?: EnvironnementData | null }) {
   const [index, setIndex] = useState(-1)
+  const eyebrow = data?.eyebrow ?? "l'art de la table…"
+  const heading = data?.heading
+  const body = data?.body1 ?? "Banquettes de velours, miroirs piqués, comptoir de zinc. Les éléments sont familiers, l'arrangement précis. On y vient pour un café au comptoir, pour un déjeuner de travail, pour le dernier verre — et l'on revient parce qu'on s'y sent attendu."
 
   return (
     <section className="section" id="environnement" data-parallax-trigger>
@@ -26,13 +30,13 @@ export default function EnvironnementSection() {
         <div className="section-head">
           <div>
             <div className="section-num">— 03 / La salle</div>
-            <span className="eyebrow" style={{ marginTop: 18 }}>l&apos;art de la table…</span>
+            <span className="eyebrow" style={{ marginTop: 18 }}>{eyebrow}</span>
             <h2 className="display" data-words-pullup style={{ marginTop: 24 }}>
-              Au&nbsp;<span className="ital">quotidien.</span>
+              {heading ?? <>Au&nbsp;<span className="ital">quotidien.</span></>}
             </h2>
           </div>
           <div className="body-lg" data-anim-para>
-            Banquettes de velours, miroirs piqués, comptoir de zinc. Les éléments sont familiers, l&apos;arrangement précis. On y vient pour un café au comptoir, pour un déjeuner de travail, pour le dernier verre — et l&apos;on revient parce qu&apos;on s&apos;y sent attendu.
+            {body}
           </div>
         </div>
 

@@ -33,6 +33,13 @@ export interface HeroData {
   image: SanityImage
 }
 
+export interface MenuCardData {
+  label?: string
+  name: string
+  price?: string
+  image?: SanityImage
+}
+
 export interface BrunchData {
   eyebrow: string
   heading: string
@@ -42,6 +49,7 @@ export interface BrunchData {
   ctaLabel: string
   menuCtaLabel: string
   image: SanityImage
+  menuCards?: MenuCardData[]
 }
 
 export interface TerrasseData {
@@ -89,6 +97,12 @@ export interface InstagramData {
   ctaLabel: string
 }
 
+export interface PositionData {
+  title: string
+  type?: string
+  description?: string
+}
+
 export interface CareersData {
   eyebrow: string
   heading: string
@@ -96,6 +110,7 @@ export interface CareersData {
   ctaLabel: string
   perksHeading: string
   perks: string[]
+  positions?: PositionData[]
 }
 
 export interface FinalCTAData {

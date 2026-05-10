@@ -1,8 +1,22 @@
 import Image from 'next/image'
 import { brand } from '@/lib/brand'
 import CareersForm from '@/components/forms/CareersForm'
+import type { CareersData } from '@/lib/sanity.types'
 
-export default function CareersSection() {
+const FALLBACK_POSITIONS = [
+  { title: 'Chef de partie · Garde-manger', type: 'CDI', description: '39h · service du soir' },
+  { title: 'Sommelier · Adjoint', type: 'CDI', description: '39h · coupures' },
+  { title: 'Chef de rang', type: 'CDI', description: '35h · soir et week-end' },
+  { title: 'Pâtissier·ère', type: 'CDI', description: '39h · 6h — 14h' },
+  { title: 'Candidature spontanée', type: '', description: "toutes brigades · toute l'année" },
+]
+
+export default function CareersSection({ data }: { data?: CareersData | null }) {
+  const eyebrow = data?.eyebrow ?? 'la maison recrute…'
+  const heading = data?.heading
+  const intro = data?.intro ?? brand.careers.intro
+  const ctaLabel = data?.ctaLabel ?? 'Postuler maintenant'
+  const positions = (data?.positions && data.positions.length > 0) ? data.positions : FALLBACK_POSITIONS
   return (
     <section className="section warm" id="recrutement">
       <svg className="noise noise-strong" preserveAspectRatio="none">
@@ -12,13 +26,13 @@ export default function CareersSection() {
         <div className="section-head">
           <div>
             <div className="section-num">— 12 / Nous rejoindre</div>
-            <span className="eyebrow" style={{ marginTop: 18 }}>la maison recrute…</span>
+            <span className="eyebrow" style={{ marginTop: 18 }}>{eyebrow}</span>
             <h2 className="display" data-words-pullup style={{ marginTop: 24 }}>
-              Une&nbsp;<span className="ital">famille,</span>&nbsp;en cuisine.
+              {heading ?? <>Une&nbsp;<span className="ital">famille,</span>&nbsp;en cuisine.</>}
             </h2>
           </div>
           <div className="body-lg" data-anim-para>
-            {brand.careers.intro}
+            {intro}
           </div>
         </div>
 
@@ -30,44 +44,18 @@ export default function CareersSection() {
           </div>
 
           <div className="careers-list" data-card-stagger>
-            <a className="role" data-card href={`mailto:${brand.careers.contactEmail}`}>
-              <div>
-                <div className="position">Chef de partie · Garde-manger</div>
-                <div className="schedule">CDI · 39h · service du soir</div>
-              </div>
-              <div className="arrow-wrap">↗</div>
-            </a>
-            <a className="role" data-card href={`mailto:${brand.careers.contactEmail}`}>
-              <div>
-                <div className="position">Sommelier · Adjoint</div>
-                <div className="schedule">CDI · 39h · coupures</div>
-              </div>
-              <div className="arrow-wrap">↗</div>
-            </a>
-            <a className="role" data-card href={`mailto:${brand.careers.contactEmail}`}>
-              <div>
-                <div className="position">Chef de rang</div>
-                <div className="schedule">CDI · 35h · soir et week-end</div>
-              </div>
-              <div className="arrow-wrap">↗</div>
-            </a>
-            <a className="role" data-card href={`mailto:${brand.careers.contactEmail}`}>
-              <div>
-                <div className="position">Pâtissier·ère</div>
-                <div className="schedule">CDI · 39h · 6h — 14h</div>
-              </div>
-              <div className="arrow-wrap">↗</div>
-            </a>
-            <a className="role" data-card href={`mailto:${brand.careers.contactEmail}`}>
-              <div>
-                <div className="position">Candidature spontanée</div>
-                <div className="schedule">toutes brigades · toute l'année</div>
-              </div>
-              <div className="arrow-wrap">↗</div>
-            </a>
+            {positions.map((p, i) => (
+              <a key={i} className="role" data-card href={`mailto:${brand.careers.contactEmail}?subject=Candidature : ${encodeURIComponent(p.title)}`}>
+                <div>
+                  <div className="position">{p.title}</div>
+                  <div className="schedule">{[p.type, p.description].filter(Boolean).join(' · ')}</div>
+                </div>
+                <div className="arrow-wrap">↗</div>
+              </a>
+            ))}
             <div style={{ marginTop: 32 }}>
               <a className="btn red" href={`mailto:${brand.careers.contactEmail}`}>
-                Postuler maintenant <span className="arrow">↗</span>
+                {ctaLabel} <span className="arrow">↗</span>
               </a>
             </div>
           </div>

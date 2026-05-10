@@ -21,6 +21,25 @@ export const brunchSection = defineType({
     defineField({ name: 'image', title: 'Photo', type: 'image', options: { hotspot: true } }),
     defineField({ name: 'ctaLabel', title: 'Bouton réservation', type: 'string' }),
     defineField({ name: 'menuCtaLabel', title: 'Bouton carte (si PDF actif)', type: 'string' }),
+    defineField({
+      name: 'menuCards',
+      title: 'Cartes du menu',
+      description: 'Les 4 plats mis en avant (entrée, signature, marché, dessert)',
+      type: 'array',
+      of: [
+        defineField({
+          name: 'menuCard',
+          type: 'object',
+          fields: [
+            defineField({ name: 'label', title: 'Catégorie', type: 'string', description: "ex: l'entrée, la signature…" }),
+            defineField({ name: 'name', title: 'Nom du plat', type: 'string', validation: (R) => R.required() }),
+            defineField({ name: 'price', title: 'Prix', type: 'string', description: 'ex: 14 €' }),
+            defineField({ name: 'image', title: 'Photo', type: 'image', options: { hotspot: true } }),
+          ],
+          preview: { select: { title: 'name', subtitle: 'label', media: 'image' } },
+        }),
+      ],
+    }),
   ],
   preview: { select: { title: 'heading', media: 'image' } },
 })

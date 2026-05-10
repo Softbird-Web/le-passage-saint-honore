@@ -3,9 +3,14 @@
 import Link from 'next/link'
 import { useEffect, useRef } from 'react'
 import { brand } from '@/lib/brand'
+import type { SiteSettingsData } from '@/lib/sanity.types'
 
-export default function Navbar() {
+export default function Navbar({ settings }: { settings?: SiteSettingsData | null }) {
   const toggleRef = useRef<HTMLButtonElement>(null)
+  const bookingUrl = settings?.booking?.url ?? brand.booking.url
+  const instagramUrl = settings?.social?.instagramUrl ?? brand.social.instagramUrl
+  const address = settings?.contact?.address ?? brand.contact.address
+  const phone = settings?.contact?.phone ?? brand.contact.phone
 
   useEffect(() => {
     let mounted = true
@@ -176,7 +181,7 @@ export default function Navbar() {
               </a>
             </li>
             <li data-reveal-l>
-              <a href={brand.booking.url} className="underlay-nav__link-large" target="_blank" rel="noopener noreferrer">
+              <a href={bookingUrl} className="underlay-nav__link-large" target="_blank" rel="noopener noreferrer">
                 <span className="num">— 06</span>
                 <span className="underlay-nav__link-label">Réserver</span>
               </a>
@@ -190,7 +195,7 @@ export default function Navbar() {
               </div>
               <ul className="underlay-nav__list is--small" style={{ listStyle: 'none' }}>
                 <li data-reveal-s>
-                  <a href={brand.social.instagramUrl} className="underlay-nav__link-small" target="_blank" rel="noopener noreferrer">
+                  <a href={instagramUrl} className="underlay-nav__link-small" target="_blank" rel="noopener noreferrer">
                     Instagram&nbsp;↗
                   </a>
                 </li>
@@ -208,13 +213,13 @@ export default function Navbar() {
               </div>
               <ul className="underlay-nav__list is--small" style={{ listStyle: 'none' }}>
                 <li data-reveal-s>
-                  <span className="underlay-nav__link-small">{brand.contact.address.split(',')[0]}</span>
+                  <span className="underlay-nav__link-small">{address.split(',')[0]}</span>
                 </li>
                 <li data-reveal-s>
-                  <span className="underlay-nav__link-small">{brand.contact.city} · M° Tuileries</span>
+                  <span className="underlay-nav__link-small">Paris 1er · M° Tuileries</span>
                 </li>
                 <li data-reveal-s>
-                  <span className="underlay-nav__link-small">{brand.contact.phone}</span>
+                  <span className="underlay-nav__link-small">{phone}</span>
                 </li>
               </ul>
             </div>

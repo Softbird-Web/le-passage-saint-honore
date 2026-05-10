@@ -2,13 +2,17 @@ import type { Metadata } from 'next'
 import Image from 'next/image'
 import PrivateHireForm from '@/components/forms/PrivateHireForm'
 import Footer from '@/components/layout/Footer'
+import { getSiteSettings } from '@/lib/getHomepage'
+
+export const revalidate = 60
 
 export const metadata: Metadata = {
   title: 'Privatisation — Le Passage Saint-Honoré',
   description: "Réservez l'un de nos espaces privatisables pour votre événement privé ou professionnel au cœur de Paris 1er.",
 }
 
-export default function PrivatisationPage() {
+export default async function PrivatisationPage() {
+  const settings = await getSiteSettings()
   return (
     <>
       <main className="priv-split-page">
@@ -45,7 +49,7 @@ export default function PrivatisationPage() {
         </div>
 
       </main>
-      <Footer />
+      <Footer settings={settings} />
     </>
   )
 }

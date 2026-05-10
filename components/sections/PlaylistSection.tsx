@@ -1,4 +1,10 @@
-export default function PlaylistSection() {
+import type { PlaylistData } from '@/lib/sanity.types'
+
+export default function PlaylistSection({ data }: { data?: PlaylistData | null }) {
+  const eyebrow = data?.eyebrow ?? 'le son de la maison…'
+  const heading = data?.heading
+  const body = data?.body ?? "Quelques surprises. Idéal entre l'apéritif et le dessert."
+  const spotifyUrl = data?.spotifyUrl ?? '#'
   return (
     <section className="section playlist">
       <svg className="noise" preserveAspectRatio="none">
@@ -8,9 +14,9 @@ export default function PlaylistSection() {
         <div className="section-head">
           <div>
             <div className="section-num">— 10 / Playlist</div>
-            <span className="eyebrow" style={{ marginTop: 18 }}>le son de la maison…</span>
+            <span className="eyebrow" style={{ marginTop: 18 }}>{eyebrow}</span>
             <h2 className="display" data-words-pullup style={{ marginTop: 24 }}>
-              Une&nbsp;<span className="ital">heure douze.</span>
+              {heading ?? <>Une&nbsp;<span className="ital">heure douze.</span></>}
             </h2>
           </div>
         </div>
@@ -29,7 +35,7 @@ export default function PlaylistSection() {
               Chanson&nbsp;<span className="ital">française.</span>
             </h3>
             <p className="body-lg" style={{ marginTop: 16, opacity: 0.85, maxWidth: '42ch' }}>
-              Quelques surprises. Idéal entre l'apéritif et le dessert.
+              {body}
             </p>
 
             <div className="playlist-tracks">
@@ -68,7 +74,7 @@ export default function PlaylistSection() {
             </div>
 
             <div style={{ marginTop: 32, display: 'flex', gap: 12 }}>
-              <a className="btn" href="#">Écouter sur Spotify <span className="arrow">↗</span></a>
+              <a className="btn" href={spotifyUrl} target="_blank" rel="noopener noreferrer">Écouter sur Spotify <span className="arrow">↗</span></a>
               <a className="btn ghost" href="#">Apple Music</a>
             </div>
           </div>

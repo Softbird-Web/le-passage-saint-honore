@@ -6,9 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "seed:sanity": "tsx lib/seed.ts"
   },
   "dependencies": {
+    "@portabletext/react": "^6.2.0",
     "@sanity/image-url": "^2.1.1",
     "@tailwindcss/postcss": "^4",
     "clsx": "^2.1.1",
@@ -27,12 +29,15 @@
     "yet-another-react-lightbox": "^3.32.0"
   },
   "devDependencies": {
+    "@sanity/client": "^7.22.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "dotenv": "^17.4.2",
     "eslint": "^9",
     "eslint-config-next": "16.2.4",
     "sanity": "^5.24.0",
+    "tsx": "^4.21.0",
     "typescript": "^5"
   }
 }

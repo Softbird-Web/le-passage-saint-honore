@@ -1,4 +1,16 @@
-export default function TestimonialsSection() {
+import type { TestimonialData } from '@/lib/sanity.types'
+
+const FALLBACK: Array<Pick<TestimonialData, 'quote' | 'name' | 'source' | 'rating'>> = [
+  { quote: "Une table qui ne triche pas. Le rapport qualité-prix est honnête, le service attentionné, le calme — précieux.", name: 'Marie-Claire L.', source: 'Le Fooding', rating: 5 },
+  { quote: "Le canard cerises noires, à se damner. Et la carte des vins, courte mais d'une intelligence rare.", name: 'Julien M.', source: 'Critique · Paris', rating: 5 },
+  { quote: "On y vient pour la salle, on y reste pour la cuisine. Antoine Vasseur a trouvé son écriture.", name: 'Sandrine D.', source: 'Le Figaro', rating: 5 },
+  { quote: "Le brunch dominical mérite à lui seul le détour. Réservez la veille — la salle se remplit en un soupir.", name: 'Pierre H.', source: 'Time Out', rating: 5 },
+  { quote: "Une lumière qui change avec l'heure, un personnel qui se souvient de votre prénom. Rare.", name: 'Anaïs R.', source: 'Vogue Paris', rating: 5 },
+  { quote: "Le passage que tout Paris s'arrache, sans le faire savoir. C'est tout ce qu'on aime.", name: 'Théo B.', source: "L'Express", rating: 5 },
+]
+
+export default function TestimonialsSection({ data }: { data?: TestimonialData[] }) {
+  const items = (data && data.length > 0) ? data : FALLBACK
   return (
     <section className="section cream testi-wrap">
       <div className="max">
@@ -15,42 +27,14 @@ export default function TestimonialsSection() {
 
       <div className="testi-row">
         <div className="testi-track">
-          <article className="testi-card">
-            <div className="stars">★★★★★</div>
-            <p className="quote">« Une table qui ne triche pas. Le rapport qualité-prix est honnête, le service attentionné, le calme — précieux. »</p>
-            <div className="author"><span>Marie-Claire L.</span><span className="src">Le Fooding</span></div>
-            <div className="testi-pin">"</div>
-          </article>
-          <article className="testi-card">
-            <div className="stars">★★★★★</div>
-            <p className="quote">« Le canard cerises noires, à se damner. Et la carte des vins, courte mais d'une intelligence rare. »</p>
-            <div className="author"><span>Julien M.</span><span className="src">Critique · Paris</span></div>
-            <div className="testi-pin">"</div>
-          </article>
-          <article className="testi-card">
-            <div className="stars">★★★★★</div>
-            <p className="quote">« On y vient pour la salle, on y reste pour la cuisine. Antoine Vasseur a trouvé son écriture. »</p>
-            <div className="author"><span>Sandrine D.</span><span className="src">Le Figaro</span></div>
-            <div className="testi-pin">"</div>
-          </article>
-          <article className="testi-card">
-            <div className="stars">★★★★★</div>
-            <p className="quote">« Le brunch dominical mérite à lui seul le détour. Réservez la veille — la salle se remplit en un soupir. »</p>
-            <div className="author"><span>Pierre H.</span><span className="src">Time Out</span></div>
-            <div className="testi-pin">"</div>
-          </article>
-          <article className="testi-card">
-            <div className="stars">★★★★★</div>
-            <p className="quote">« Une lumière qui change avec l'heure, un personnel qui se souvient de votre prénom. Rare. »</p>
-            <div className="author"><span>Anaïs R.</span><span className="src">Vogue Paris</span></div>
-            <div className="testi-pin">"</div>
-          </article>
-          <article className="testi-card">
-            <div className="stars">★★★★★</div>
-            <p className="quote">« Le passage que tout Paris s'arrache, sans le faire savoir. C'est tout ce qu'on aime. »</p>
-            <div className="author"><span>Théo B.</span><span className="src">L'Express</span></div>
-            <div className="testi-pin">"</div>
-          </article>
+          {items.map((t, i) => (
+            <article key={(('_id' in t && typeof t._id === 'string') ? t._id : null) ?? i} className="testi-card">
+              <div className="stars">{'★'.repeat(t.rating ?? 5)}</div>
+              <p className="quote">« {t.quote} »</p>
+              <div className="author"><span>{t.name}</span><span className="src">{t.source}</span></div>
+              <div className="testi-pin">&quot;</div>
+            </article>
+          ))}
         </div>
       </div>
     </section>

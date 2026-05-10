@@ -1,6 +1,20 @@
 import Image from 'next/image'
+import { PortableText } from '@portabletext/react'
+import { urlFor } from '@/lib/sanity'
+import type { HistoireData } from '@/lib/sanity.types'
 
-export default function HistoireSection() {
+const FALLBACK_PARAGRAPHS = [
+  "Niché entre deux portes cochères du premier arrondissement, Le Passage est né d'une envie simple… retrouver le geste juste, le bois ciré, la nappe blanche et la lumière du soir qui s'attarde sur les verres.",
+  "Ici, la cuisine n'a pas de manifeste. Elle a une mémoire — celle des bistrots de quartier, des plats que l'on partage, des conversations qui débordent jusqu'à minuit.",
+]
+
+export default function HistoireSection({ data }: { data?: HistoireData | null }) {
+  const eyebrow = data?.eyebrow ?? 'brasserie parisienne…'
+  const heading = data?.heading
+  const body = data?.body
+  const imgSrc = data?.image?.asset
+    ? urlFor(data.image).width(1600).quality(80).url()
+    : '/images/terrace/terrace-perspective.jpg'
   return (
     <section className="section cream" id="histoire">
       <svg className="noise noise-strong" preserveAspectRatio="none">
@@ -10,21 +24,25 @@ export default function HistoireSection() {
         <div className="section-head">
           <div>
             <div className="section-num">— 02 / Histoire</div>
-            <span className="eyebrow" style={{ marginTop: 18 }}>brasserie parisienne…</span>
+            <span className="eyebrow" style={{ marginTop: 18 }}>{eyebrow}</span>
             <h2 className="display" data-words-pullup style={{ marginTop: 24 }}>
-              Un&nbsp;<span className="ital">passage,</span>&nbsp;un&nbsp;refuge.
+              {heading ?? <>Un&nbsp;<span className="ital">passage,</span>&nbsp;un&nbsp;refuge.</>}
             </h2>
           </div>
         </div>
 
         <div className="histoire-grid">
           <div className="histoire-text">
-            <p data-anim-para>
-              Niché entre deux portes cochères du premier arrondissement, Le Passage est né d'une envie simple… retrouver le geste juste, le bois ciré, la nappe blanche et la lumière du soir qui s'attarde sur les verres.
-            </p>
-            <p data-anim-para>
-              Ici, la cuisine n'a pas de manifeste. Elle a une mémoire — celle des bistrots de quartier, des plats que l'on partage, des conversations qui débordent jusqu'à minuit.
-            </p>
+            {body && body.length > 0 ? (
+              <div data-anim-para>
+                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                <PortableText value={body as any} />
+              </div>
+            ) : (
+              FALLBACK_PARAGRAPHS.map((p, i) => (
+                <p key={i} data-anim-para>{p}</p>
+              ))
+            )}
 
             <div className="histoire-meta">
               <div>
@@ -48,7 +66,7 @@ export default function HistoireSection() {
 
           <div className="histoire-image" data-parallax-trigger>
             <div data-parallax="0.15" style={{ position: 'absolute', inset: 0 }}>
-              <Image src="/images/terrace/terrace-perspective.jpg" alt="Longue perspective de la terrasse du Passage Saint-Honoré, mur Bistrot Parisien et rue de Paris" fill className="object-cover" sizes="(max-width:768px) 100vw, 50vw" />
+              <Image src={imgSrc} alt="Longue perspective de la terrasse du Passage Saint-Honoré" fill className="object-cover" sizes="(max-width:768px) 100vw, 50vw" />
             </div>
           </div>
         </div>
