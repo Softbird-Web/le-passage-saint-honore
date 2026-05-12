@@ -153,10 +153,10 @@ async function seed() {
       menuCtaLabel: 'Voir la carte',
       ...(brunchImage ? { image: brunchImage } : {}),
       menuCards: [
-        { _key: 'c1', _type: 'menuCard', label: "l'entrée", name: 'Œuf parfait, jus de cresson', price: '14 €', ...(card1Image ? { image: card1Image } : {}) },
-        { _key: 'c2', _type: 'menuCard', label: 'la signature', name: 'Canette rôtie, cerises noires', price: '32 €', ...(card2Image ? { image: card2Image } : {}) },
-        { _key: 'c3', _type: 'menuCard', label: 'du marché', name: 'Turbot, beurre noisette', price: '38 €', ...(card3Image ? { image: card3Image } : {}) },
-        { _key: 'c4', _type: 'menuCard', label: 'le dessert', name: 'Paris-Brest, praliné maison', price: '12 €', ...(card4Image ? { image: card4Image } : {}) },
+        { _key: 'c1', _type: 'menuCard', label: "l'entrée", name: 'Tartare de saumon, salade', price: '14 €', ...(card1Image ? { image: card1Image } : {}) },
+        { _key: 'c2', _type: 'menuCard', label: 'la signature', name: 'Salade de saumon, blinis', price: '32 €', ...(card2Image ? { image: card2Image } : {}) },
+        { _key: 'c3', _type: 'menuCard', label: 'du marché', name: 'Pizza napolitaine, jambon-champignons', price: '38 €', ...(card3Image ? { image: card3Image } : {}) },
+        { _key: 'c4', _type: 'menuCard', label: 'le dessert', name: 'Tartelettes aux framboises', price: '12 €', ...(card4Image ? { image: card4Image } : {}) },
       ],
     },
     {

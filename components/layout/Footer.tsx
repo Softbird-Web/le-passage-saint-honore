@@ -1,3 +1,5 @@
+import Image from 'next/image'
+import Link from 'next/link'
 import type { SiteSettingsData } from '@/lib/sanity.types'
 
 export default function Footer({ settings }: { settings?: SiteSettingsData | null }) {
@@ -6,8 +8,13 @@ export default function Footer({ settings }: { settings?: SiteSettingsData | nul
     <footer className="footer">
       <div className="footer-top">
         <div className="footer-mark">
-          <span className="script-mark">Le</span>
-          <span className="name-mark">{name.replace(/^Le\s+/, '')}</span>
+          <Image
+            src="/images/LePassageLogoBlack.png"
+            alt={name}
+            width={160}
+            height={40}
+            style={{ height: 36, width: 'auto', filter: 'brightness(0) invert(1)' }}
+          />
         </div>
         <div style={{ display: 'flex', gap: 32, fontFamily: 'var(--font-sans)', fontSize: 14, letterSpacing: '0.18em', textTransform: 'uppercase', opacity: 0.85, flexWrap: 'wrap' }}>
           <a href="#histoire">Histoire</a>
@@ -19,7 +26,7 @@ export default function Footer({ settings }: { settings?: SiteSettingsData | nul
       </div>
       <div className="footer-bottom">
         <span>© MMXXVI · {name}</span>
-        <span>Mentions légales · Confidentialité</span>
+        <Link href="/mentions-legales">Mentions légales</Link>
         <span>Site par Softbird</span>
       </div>
     </footer>

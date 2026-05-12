@@ -1270,6 +1270,10 @@ h3.display { font-size: clamp(28px, 3.4vw, 56px); }
   font-family: var(--font-script); font-size: 11px; color: var(--mustard);
   border: 1px solid rgba(245,240,232,0.3);
 }
+.insta-cb-card .chip .chip-logo {
+  width: 18px; height: 18px; border-radius: 50%;
+  object-fit: cover;
+}
 .insta-cb-card .chip .handle {
   font-family: var(--font-sans);
   font-size: 11px;
@@ -1765,4 +1769,68 @@ h3.display { font-size: clamp(28px, 3.4vw, 56px); }
 .careers-form-wrap {
   margin-top: clamp(64px, 8vw, 100px);
   max-width: 760px;
+}
+
+/* ===== Playlist Spotify/Apple Music actions ===== */
+.playlist-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 32px;
+  flex-wrap: wrap;
+}
+
+/* ===== Mentions Légales page ===== */
+.legal-page {
+  padding-top: clamp(120px, 14vh, 180px);
+  padding-bottom: clamp(64px, 8vw, 120px);
+  color: var(--cream);
+}
+.legal-head { margin-bottom: clamp(48px, 6vw, 80px); }
+.legal-section { margin-top: clamp(36px, 4vw, 56px); max-width: 70ch; }
+.legal-h2 {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(22px, 2vw, 30px);
+  margin-bottom: 14px;
+  color: var(--cream);
+}
+.legal-p {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.7;
+  opacity: 0.82;
+  margin-top: 12px;
+}
+.legal-p a { color: var(--mustard); text-decoration: underline; text-underline-offset: 3px; }
+
+/* ===== Final mobile polish overrides ===== */
+@media (max-width: 767px) {
+  .cursor-marquee { display: none !important; }
+
+  .underlay-nav__inner {
+    overflow-y: auto;
+    max-height: 100dvh;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .hero-top { font-size: 9px; letter-spacing: 0.06em; }
+
+  .hero-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .final-cta-headline h2 {
+    font-size: clamp(36px, 9vw, 56px);
+    line-height: 1.1;
+    max-width: 12ch;
+  }
+
+  .playlist-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .playlist-actions .btn { justify-content: center; }
 }

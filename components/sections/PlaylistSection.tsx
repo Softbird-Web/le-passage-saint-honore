@@ -73,7 +73,7 @@ export default function PlaylistSection({ data }: { data?: PlaylistData | null }
               </div>
             </div>
 
-            <div style={{ marginTop: 32, display: 'flex', gap: 12 }}>
+            <div className="playlist-actions">
               <a className="btn" href={spotifyUrl} target="_blank" rel="noopener noreferrer">Écouter sur Spotify <span className="arrow">↗</span></a>
               <a className="btn ghost" href="#">Apple Music</a>
             </div>

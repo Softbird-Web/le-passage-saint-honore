@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useEffect, useRef } from 'react'
 import { brand } from '@/lib/brand'
 import type { SiteSettingsData } from '@/lib/sanity.types'
@@ -153,8 +154,14 @@ export default function Navbar({ settings }: { settings?: SiteSettingsData | nul
         <div className="underlay-nav__bar">
           <div className="underlay-nav__container">
             <Link href="/" className="underlay-nav__logo" aria-label="Le Passage Saint Honore">
-              <span className="lp-mark">Le</span>
-              <span className="lp-name">Passage&nbsp;Saint&nbsp;Honore</span>
+              <Image
+                src="/images/LePassageLogoBlack.png"
+                alt="Le Passage Saint-Honoré"
+                width={140}
+                height={36}
+                priority
+                style={{ height: 32, width: 'auto', filter: 'brightness(0) invert(1)' }}
+              />
             </Link>
             <button
               data-underlay-nav-toggle

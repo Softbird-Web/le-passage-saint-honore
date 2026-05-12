@@ -36,7 +36,7 @@ export default function InstagramSection({ data, settings }: { data?: InstagramD
               <div className="recommend">recommandé…</div>
               <div className="caption">La canette aux cerises noires est de retour à la carte ce soir.</div>
               <div className="tags">#lepassage #brasserieparisienne #saisondescerises #paris1</div>
-              <div className="chip"><span className="dot">L</span><span className="handle">{handle}</span><span className="check">✓</span></div>
+              <div className="chip"><Image src="/images/InstagramLogo.png" alt="Instagram" width={16} height={16} className="chip-logo" /><span className="handle">{handle}</span><span className="check">✓</span></div>
             </div>
           </a>
 
@@ -46,7 +46,7 @@ export default function InstagramSection({ data, settings }: { data?: InstagramD
               <div className="recommend">recommandé…</div>
               <div className="caption">07h32 — la maison s'ouvre. Premier café, premier pain.</div>
               <div className="tags">#lepassage #cafedumatin #boulangerie #ruesthonore</div>
-              <div className="chip"><span className="dot">L</span><span className="handle">{handle}</span><span className="check">✓</span></div>
+              <div className="chip"><Image src="/images/InstagramLogo.png" alt="Instagram" width={16} height={16} className="chip-logo" /><span className="handle">{handle}</span><span className="check">✓</span></div>
             </div>
           </a>
 
@@ -56,7 +56,7 @@ export default function InstagramSection({ data, settings }: { data?: InstagramD
               <div className="recommend">recommandé…</div>
               <div className="caption">Quand l'apéro sonne, on descend au Passage. À l'heure bleue.</div>
               <div className="tags">#lepassage #cocktail #aperitif #paris</div>
-              <div className="chip"><span className="dot">L</span><span className="handle">{handle}</span><span className="check">✓</span></div>
+              <div className="chip"><Image src="/images/InstagramLogo.png" alt="Instagram" width={16} height={16} className="chip-logo" /><span className="handle">{handle}</span><span className="check">✓</span></div>
             </div>
           </a>
 
@@ -66,7 +66,7 @@ export default function InstagramSection({ data, settings }: { data?: InstagramD
               <div className="recommend">recommandé…</div>
               <div className="caption">Le meilleur plan du dimanche ? Un brunch chez nous, évidemment.</div>
               <div className="tags">#brunch #dimanchegourmand #brasserieparisienne #paris1</div>
-              <div className="chip"><span className="dot">L</span><span className="handle">{handle}</span><span className="check">✓</span></div>
+              <div className="chip"><Image src="/images/InstagramLogo.png" alt="Instagram" width={16} height={16} className="chip-logo" /><span className="handle">{handle}</span><span className="check">✓</span></div>
             </div>
           </a>
         </div>
