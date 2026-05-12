@@ -43,7 +43,6 @@ export default function BrunchSection({ data }: { data?: BrunchData | null }) {
                 <div className="meta">
                   {c.label ? <div className="label">{c.label}</div> : null}
                   <div className="name">{c.name}</div>
-                  {c.price ? <div className="price">{c.price}</div> : null}
                 </div>
               </article>
             )

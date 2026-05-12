@@ -101,6 +101,35 @@ export default function Navbar({ settings }: { settings?: SiteSettingsData | nul
         if (e.key === 'Escape' && isOpen) { toggle(); toggleBtn.focus() }
       })
 
+      // Close menu before navigating when a nav link inside the open menu is clicked
+      menuEl.querySelectorAll<HTMLAnchorElement>('a[href]').forEach((link) => {
+        link.addEventListener('click', (e) => {
+          if (!isOpen) return
+          const href = link.getAttribute('href') ?? ''
+          const isAnchor = href.startsWith('#')
+          const isExternal = link.target === '_blank'
+          e.preventDefault()
+          toggle()
+          // Wait for close animation (~600ms) before navigating
+          setTimeout(() => {
+            if (isAnchor) {
+              const target = document.querySelector(href)
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              const lenis = (window as any).__lenis
+              if (target && lenis?.scrollTo) {
+                lenis.scrollTo(target as HTMLElement, { offset: -80, duration: 1.0 })
+              } else if (target) {
+                target.scrollIntoView({ behavior: 'smooth' })
+              }
+            } else if (isExternal) {
+              window.open(href, '_blank', 'noopener,noreferrer')
+            } else {
+              window.location.href = href
+            }
+          }, 650)
+        })
+      })
+
       let resizeTimer: ReturnType<typeof setTimeout>
       window.addEventListener('resize', () => {
         clearTimeout(resizeTimer)

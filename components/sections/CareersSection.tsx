@@ -1,6 +1,5 @@
 import Image from 'next/image'
 import { brand } from '@/lib/brand'
-import CareersForm from '@/components/forms/CareersForm'
 import type { CareersData } from '@/lib/sanity.types'
 
 const FALLBACK_POSITIONS = [
@@ -61,9 +60,6 @@ export default function CareersSection({ data }: { data?: CareersData | null }) 
           </div>
         </div>
 
-        <div className="careers-form-wrap" data-reveal>
-          <CareersForm />
-        </div>
       </div>
     </section>
   )

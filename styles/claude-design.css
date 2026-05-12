@@ -246,7 +246,7 @@ h3.display { font-size: clamp(28px, 3.4vw, 56px); }
   transition: background 0.4s ease, backdrop-filter 0.4s ease;
 }
 .underlay-nav__header.is-scrolled .underlay-nav__bar {
-  background: rgba(10, 9, 7, 0.92);
+  background: rgba(48, 17, 15, 0.92);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
@@ -268,7 +268,7 @@ h3.display { font-size: clamp(28px, 3.4vw, 56px); }
   font-size: 22px;
   letter-spacing: -0.01em;
   line-height: 1;
-  color: var(--mustard);
+  color: var(--cream);
 }
 .underlay-nav__logo .lp-name {
   font-family: var(--font-display);
@@ -446,7 +446,7 @@ h3.display { font-size: clamp(28px, 3.4vw, 56px); }
 }
 .underlay-nav__dark {
   opacity: 0;
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgba(48,17,15,0.5);
   position: absolute;
   inset: 0;
 }
@@ -493,7 +493,7 @@ h3.display { font-size: clamp(28px, 3.4vw, 56px); }
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.15) 35%, rgba(0,0,0,0.7) 100%);
+  background: linear-gradient(180deg, rgba(48,17,15,0.45) 0%, rgba(48,17,15,0.15) 35%, rgba(48,17,15,0.7) 100%);
 }
 .hero-content {
   position: absolute;
@@ -611,7 +611,7 @@ h3.display { font-size: clamp(28px, 3.4vw, 56px); }
 .section.cream .careers-list .role:first-child { border-top-color: rgba(13,13,13,0.12); }
 .section.cream .careers-list .role .arrow-wrap { border-color: rgba(13,13,13,0.18); }
 .section.cream .menu-card { background: #e6dcc8; }
-.section.cream .menu-card .meta .label { color: var(--red-deep); }
+.section.cream .menu-card .meta .label { color: var(--cream); opacity: 0.75; }
 .section.cream .testi-card { background: #ece2cf; border-color: rgba(13,13,13,0.08); color: var(--ink); }
 .section.cream .testi-card .stars { color: var(--red-deep); }
 .section.cream .testi-card .author .src { color: var(--red-deep); }
@@ -758,7 +758,7 @@ h3.display { font-size: clamp(28px, 3.4vw, 56px); }
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.45) 40%, rgba(0,0,0,0.82) 100%);
+  background: linear-gradient(180deg, rgba(48,17,15,0.6) 0%, rgba(48,17,15,0.45) 40%, rgba(48,17,15,0.82) 100%);
 }
 .horizontal__panel-content {
   position: relative;
@@ -817,7 +817,7 @@ h3.display { font-size: clamp(28px, 3.4vw, 56px); }
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.7) 100%);
+  background: linear-gradient(180deg, rgba(48,17,15,0.35) 0%, rgba(48,17,15,0.1) 40%, rgba(48,17,15,0.7) 100%);
 }
 .terrasse-content {
   position: absolute;
@@ -955,7 +955,7 @@ h3.display { font-size: clamp(28px, 3.4vw, 56px); }
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.78) 100%);
+  background: linear-gradient(180deg, transparent 50%, rgba(48,17,15,0.78) 100%);
 }
 .menu-card .meta {
   position: absolute;
@@ -1015,12 +1015,12 @@ h3.display { font-size: clamp(28px, 3.4vw, 56px); }
 .btn {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding: 14px 22px;
+  gap: 8px;
+  padding: 12px 20px;
   border-radius: 999px;
   font-family: var(--font-sans);
-  font-size: 14px;
-  letter-spacing: 0.22em;
+  font-size: 11px;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   background: var(--cream);
   color: var(--ink);
@@ -1031,7 +1031,7 @@ h3.display { font-size: clamp(28px, 3.4vw, 56px); }
 .btn.ghost-dark { background: transparent; color: var(--ink); border: 1px solid rgba(13,13,13,0.14); }
 .btn.red { background: var(--red); color: var(--cream); }
 .btn.deep-red { background: var(--red-deep); color: var(--cream); }
-.btn .arrow { font-family: var(--font-mono); font-size: 13px; transform: translateY(-1px); }
+.btn .arrow { font-family: var(--font-mono); font-size: 11px; transform: translateY(-1px); }
 
 /* ============================================
    Testimonials — infinite ticker
@@ -1221,7 +1221,7 @@ h3.display { font-size: clamp(28px, 3.4vw, 56px); }
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, transparent 30%, rgba(0,0,0,0.85) 100%);
+  background: linear-gradient(180deg, transparent 30%, rgba(48,17,15,0.85) 100%);
   z-index: 1;
 }
 .insta-cb-card .meta {
@@ -1434,7 +1434,7 @@ h3.display { font-size: clamp(28px, 3.4vw, 56px); }
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.78));
+  background: linear-gradient(180deg, rgba(48,17,15,0.55), rgba(48,17,15,0.78));
 }
 .final-cta-content {
   position: relative;
@@ -1521,7 +1521,7 @@ h3.display { font-size: clamp(28px, 3.4vw, 56px); }
   font-style: italic;
   font-size: 22px;
   letter-spacing: -0.01em;
-  color: var(--mustard);
+  color: var(--cream);
   line-height: 1;
 }
 .footer-mark .name-mark {
@@ -1578,7 +1578,7 @@ h3.display { font-size: clamp(28px, 3.4vw, 56px); }
   inset: 0;
   background:
     radial-gradient(ellipse at 30% 20%, rgba(212,168,51,0.12), transparent 60%),
-    radial-gradient(ellipse at 70% 80%, rgba(0,0,0,0.4), transparent 60%);
+    radial-gradient(ellipse at 70% 80%, rgba(48,17,15,0.4), transparent 60%);
   pointer-events: none;
 }
 .placeholder .label {
@@ -1589,7 +1589,7 @@ h3.display { font-size: clamp(28px, 3.4vw, 56px); }
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: rgba(245, 240, 232, 0.7);
-  background: rgba(0,0,0,0.4);
+  background: rgba(48,17,15,0.4);
   padding: 6px 10px;
   border-radius: 2px;
   pointer-events: none;
@@ -1685,7 +1685,7 @@ h3.display { font-size: clamp(28px, 3.4vw, 56px); }
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(48, 17, 15, 0.4);
   z-index: 1;
 }
 .priv-testimonial {
